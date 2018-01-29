@@ -51,4 +51,36 @@ public class Factorial {
         return fib.apply(n -1) + fib.apply(n - 2);
     }
 
+    /**
+     * 转换汉诺塔参数并调用
+     * @param n 盘子数量
+     * @param from
+     * @param mid
+     * @param to
+     * @return
+     */
+    public static  boolean movePlateMemo(int n, String from, String mid, String to){
+        Object[] params = {n, from, mid, to};
+        return callMemo(Factorial::movePlateCallMemo, params);
+    }
+    /**
+     * 汉诺塔问题
+     * @param function
+     * @param params
+     * @return
+     */
+    private static boolean movePlateCallMemo(Function<Object[], Boolean> function, Object[] params){
+        int n = (int) params[0];
+        String from = (String) params[1];
+        String mid = (String) params[2];
+        String to = (String) params[3];
+        if (n <= 1){
+            System.out.println(from + " -> " + to);
+            return true;
+        }
+        function.apply(new Object[]{n-1, from, to, mid});
+        System.out.println(from + " -> "  + to);
+        function.apply(new Object[]{n-1, mid, from, to});
+        return false;
+    }
 }
