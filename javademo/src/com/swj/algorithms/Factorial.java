@@ -1,6 +1,9 @@
 package com.swj.algorithms;
 
+import com.google.common.collect.Lists;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -82,5 +85,26 @@ public class Factorial {
         System.out.println(from + " -> "  + to);
         function.apply(new Object[]{n-1, mid, from, to});
         return false;
+    }
+
+    //价格的列表 index对应length - 1
+    private static final List<Integer> prices = Lists.newArrayList(1, 5, 8, 9, 10,
+            17, 17, 20, 24, 30);
+
+    /**
+     * 备忘录优化杠切割问题
+     * @param rodLength
+     * @return
+     */
+    public static int maxProfit(final int rodLength){
+        return callMemo(
+                (func, length) ->{
+                    int profit = (length <= prices.size()) ? prices.get(length - 1) : 0;
+                    for (int i = 1; i < length; i++){
+                        int priceWhenCut = func.apply(i) + func.apply(length - i);
+                        if(profit < priceWhenCut) profit = priceWhenCut;
+                    }
+                    return profit;
+        }, rodLength);
     }
 }
