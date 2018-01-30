@@ -91,11 +91,6 @@ public class Factorial {
     private static final List<Integer> prices = Lists.newArrayList(1, 5, 8, 9, 10,
             17, 17, 20, 24, 30);
 
-    /**
-     * 备忘录优化杠切割问题
-     * @param rodLength
-     * @return
-     */
     public static int maxProfit(final int rodLength){
         return callMemo(
                 (func, length) ->{
