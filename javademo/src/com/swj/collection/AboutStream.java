@@ -97,4 +97,5 @@ class Artist{
     public String getArtistName(){
         return name;
     }
+    public String getAddress(){ return address;}
 }

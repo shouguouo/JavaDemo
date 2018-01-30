@@ -2,9 +2,11 @@ package com.swj.collection;
 
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 /**
+ * 流的练习题
  * Created by swj on 2018/1/23.
  */
 public class StreamTest {
@@ -34,12 +36,18 @@ public class StreamTest {
         return str.chars().filter(Character::isLowerCase).count();
     }
 
+    /**
+     * 返回小写字母个数最大的字符串
+     * @param str
+     * @return
+     */
     public static Optional<String> getLowerCaseString(String[] str){
         return Stream.of(str).max(Comparator.comparing(x ->getLowerCaseCount(x)));
     }
     public static OptionalLong mostLowcaseLetters(String[] str){
         return Stream.of(str).mapToLong(x -> getLowerCaseCount(x)).max();
     }
+
     public static void main(String[] args) {
         System.out.println(addUp(Stream.of(1,2)));
         ArrayList<Artist> allArtists = new ArrayList<>();
