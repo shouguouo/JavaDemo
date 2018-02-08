@@ -96,12 +96,12 @@ class AboutLoopAndIf{
      * 3：istore_2
      * 4：iload_1
      * 5：iload_2
-     * 6：if_icmpge   12
-     * 9：iinc        1,3
+     * 6：if_icmpge   12   //比较操作数栈顶的两个值 如果a < b 为假 会执行第12行的内容
+     * 9：iinc        1,3  // 直接更新一个局部变量 a + 3
      * 12：iload_1
      * 13：iload_2
-     * 14：if_icmple 23
-     * 17：iinc      2,1
+     * 14：if_icmple 23  //比较操作数栈顶的两个值 如果a > b为假 会执行第23行内容
+     * 17：iinc      2,1 //直接更新一个局部变量 b + 1；
      * 20：goto      12
      * 23：return
      */
