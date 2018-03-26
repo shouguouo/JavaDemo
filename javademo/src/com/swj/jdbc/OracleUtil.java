@@ -1,6 +1,7 @@
 package com.swj.jdbc;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * @author swj
@@ -18,15 +19,18 @@ public class OracleUtil {
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
+        ArrayList<BookEntity> bookEntities = new ArrayList<>();
+        Long start = System.nanoTime();
         try {
-            connection = DriverManager.getConnection("jdbc:oracle:thin:@192.168.5.200:1521:kfhzbdc", "bdcdj", "bdcdj");
-            String sql = "select * from h where bdcdyh = ?";
+            connection = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "swj", "19961226");
+            String sql = "select * from book";
             ps = connection.prepareStatement(sql);
-            ps.setString(1, "330102001001GB00009F00040001");
             rs = ps.executeQuery();
             while (rs.next()){
-                String str = rs.getString("bsm");
-                System.out.println(str);
+                bookEntities.add(new BookEntity(rs.getLong("bsm"), rs.getLong("book_id"),rs.getString("book_name")
+                        ,rs.getString("book_author"),rs.getString("book_pub"),rs.getString("book_price")
+                        ,rs.getString("book_sort"),rs.getString("book_status"),rs.getDate("book_record")
+                        ,rs.getLong("book_times"),rs.getString("book_publication_date")));
             }
         } finally {
             if (rs != null){
@@ -39,5 +43,6 @@ public class OracleUtil {
                 connection.close();
             }
         }
+        System.out.println(System.nanoTime() - start);
     }
 }
