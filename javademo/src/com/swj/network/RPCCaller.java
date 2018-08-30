@@ -9,7 +9,7 @@ import java.lang.reflect.Proxy;
  * @author swj
  * @date 2018/2/10
  */
-public class RpcCaller {
+public class RPCCaller {
     public static void main(String[] args) {
         EchoService echoService = (EchoService) Proxy
                 .newProxyInstance(EchoService.class.getClassLoader(), new Class<?>[]{EchoService.class}, new DynamicProxyHandler());
