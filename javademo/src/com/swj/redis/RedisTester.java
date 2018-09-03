@@ -1,5 +1,6 @@
 package com.swj.redis;
 
+import com.swj.Const;
 import redis.clients.jedis.Jedis;
 
 /**
@@ -7,7 +8,7 @@ import redis.clients.jedis.Jedis;
  */
 public class RedisTester {
     public static void main(String[] args) {
-        Jedis jedis = new Jedis("192.168.99.128", 6379, 100000);
+        Jedis jedis = new Jedis(Const.LINUXIP, 6379, 100000);
         int i = 0;
         try {
             long start = System.currentTimeMillis();// 开始毫秒数
@@ -25,4 +26,5 @@ public class RedisTester {
         // 打印1秒内对Redis的操作次数
         System.out.println("redis每秒操作：" + i + "次");
     }
+
 }
