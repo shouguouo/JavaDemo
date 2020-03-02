@@ -1,6 +1,14 @@
 package com.swj.common;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static java.time.format.DateTimeFormatter.ISO_DATE;
+import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE;
 
 /**
  * CAS 实现单例模式 真正意义上的无锁实现
@@ -22,6 +30,27 @@ public class Singleton {
                 return singleton;
             }
         }
+    }
+    protected static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+    public static void main(String[] args) throws ParseException {
+        LocalDate sb = LocalDate.now();
+        LocalDate source = LocalDate.parse("20190828", DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+        Calendar sd = Calendar.getInstance();
+        Calendar ed = Calendar.getInstance();
+
+        sd.setTime(sdf.parse("20190821"));
+        ed.setTime(sdf.parse("20190921"));
+
+        ed.add(Calendar.DAY_OF_MONTH, 1);
+        System.out.println(sd.getTime());
+        System.out.println(ed.getTime());
+        for (; sd.before(ed);) {
+            System.out.println(sdf.format(sd.getTime()));
+            sd.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
     }
 }
 

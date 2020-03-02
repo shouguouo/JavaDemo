@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 /**
- * 设配器模式
+ * 适配器模式
  * @author swj
  * @date 2018/2/7
  */

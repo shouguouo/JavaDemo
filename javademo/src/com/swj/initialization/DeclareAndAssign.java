@@ -13,7 +13,7 @@ public class DeclareAndAssign {
         i = 100;
     }
 
-    static{
+    static {
         j = 100;
     }
 

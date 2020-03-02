@@ -1,26 +1,43 @@
 package com.swj.redis;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.swj.Const;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.JedisShardInfo;
 
 /**
- * Created by shouwj25112 on 2018/9/2.
+ * Created by wink~ on 2018/9/2.
  */
 public class RedisTester {
+    private static final byte[] LIST = "extractList".getBytes();
+
     public static void main(String[] args) {
-        Jedis jedis = new Jedis(Const.LINUXIP, 6379, 100000);
+
+        JedisShardInfo jedisShardInfo = new JedisShardInfo(Const.LINUXIP, 6379);
+        jedisShardInfo.setPassword("123456");
+        Jedis jedis = new Jedis(jedisShardInfo);
         int i = 0;
         try {
-            long start = System.currentTimeMillis();// 开始毫秒数
-            while (true) {
-                long end = System.currentTimeMillis();
-                if (end - start >= 1000) {// 当大于等于1000毫秒（相当于1秒）时，结束操作
-                    break;
-                }
-                i++;
-                jedis.set("test" + i, i + "");
-            }
-        } finally {// 关闭连接
+            long start = System.currentTimeMillis(); // 开始毫秒数
+            Task task = new Task("估值6.0", "估值6.0接口库", 1);
+
+
+            jedis.lpush(LIST, JSON.toJSONBytes(task));
+            task = new Task(null, null, null);
+            jedis.lpush(LIST, JSON.toJSONBytes(task));
+
+            task = new Task("估值6.0", null, 1);
+            jedis.lpush(LIST, JSON.toJSONBytes(task));
+
+            task = new Task("估值6.0", "hello", 1);
+
+            jedis.lpush(LIST, JSON.toJSONBytes(task));
+            jedis.lpush(LIST, JSON.toJSONBytes(new Task()));
+
+            jedis.lpush(LIST, JSON.toJSONBytes(null));
+        } finally { // 关闭连接
             jedis.close();
         }
         // 打印1秒内对Redis的操作次数

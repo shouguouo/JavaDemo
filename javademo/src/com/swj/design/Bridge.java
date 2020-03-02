@@ -55,7 +55,7 @@ abstract class ShapeB {
 class CircleB extends ShapeB{
     private int x, y, radius;
     protected CircleB(int x, int y, int radius,DrawApi drawApi) {
-        super(drawApi);
+        super(drawApi); // 构造器
         this.x = x;
         this.y = y;
         this.radius = radius;

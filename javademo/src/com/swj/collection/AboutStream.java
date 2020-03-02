@@ -32,7 +32,7 @@ public class AboutStream {
          * 缺点：每次迭代集合类代码量大 改成并行不方便 阅读性差 将行为和方法混为一谈
          */
         int count = 0;
-        for (Artist artist: allArtists){
+        for (Artist artist: allArtists) {
             if (artist.isFrom("London"))
                 count++;
         }

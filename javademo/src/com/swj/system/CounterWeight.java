@@ -39,6 +39,10 @@ public class CounterWeight {
     }
 
     public static void main(String[] args) {
-        Stream.of(count(11)).forEach((x) -> System.out.println(Arrays.toString(x)));
+//        Stream.of(count(11)).forEach((x) -> System.out.println(Arrays.toString(x)));
+
+        System.out.println("·".getBytes());
+        System.out.println("•".getBytes());
+
     }
 }
