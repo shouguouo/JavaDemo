@@ -4,8 +4,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author wink~
  * @date 2020/3/31 - 17:39
  */
-@RunWith(JUnitPlatform.class)
 @DisplayName("Fixture Test using junit 5")
 public class FixtureTest {
     Calculator calculator;
