@@ -1,5 +1,7 @@
 package com.swj.utils;
 
+import com.swj.Const;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,5 +43,9 @@ public class StringUtils {
         }
         matcher.appendTail(sb);
         return sb.toString();
+    }
+
+    public static String blankToLowerCaseUnderLine(String str) {
+        return str.replaceAll("[\\s*?]", Const.UNDER_LINE).toLowerCase();
     }
 }
