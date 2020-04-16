@@ -42,6 +42,11 @@ public class TypeTest<T, V extends @Custom Number & Serializable> { // T,V 为ty
         t = y;
     }
 
+
+    static <String, T, Ali> String get(String string, Ali ali) {
+        return string;
+    }
+
     public static void main(String[] args) {
         try {
             Field v = TypeTest.class.getField("v");
@@ -99,5 +104,11 @@ public class TypeTest<T, V extends @Custom Number & Serializable> { // T,V 为ty
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
+
+
+        Integer first = 222;
+        Long second = 333L;
+        Integer result = get(first, second);
+        System.out.println(result);
     }
 }
