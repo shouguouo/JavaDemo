@@ -7,6 +7,7 @@ package com.swj.design;
 public class AbsImp2 extends Abs{
     @Override
     void calc() {
+        super.calc();
         hello();
     }
 

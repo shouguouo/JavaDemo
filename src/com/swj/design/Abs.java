@@ -6,7 +6,9 @@ package com.swj.design;
  */
 public abstract class Abs {
 
-    abstract void calc();
+    void calc(){
+        System.out.println("super calc");
+    }
 
 
     protected void hello(){
