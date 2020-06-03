@@ -1,9 +1,11 @@
 package com.swj.thread;
 
-import java.util.Arrays;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
+import java.util.stream.LongStream;
 
 /**
  * 功能说明:
@@ -12,13 +14,11 @@ import java.util.concurrent.RecursiveTask;
  */
 public class ParallelTest extends RecursiveTask<Long> {
 
-    private static final int THRESHOLD = 100;
-    private Test[] array;
-    private int start;
-    private int end;
+    private static final int THRESHOLD = 10000;
+    private long start;
+    private long end;
 
-    public ParallelTest(Test[] array, int start, int end) {
-        this.array = array;
+    public ParallelTest(long start, long end) {
         this.start = start;
         this.end = end;
     }
@@ -27,80 +27,50 @@ public class ParallelTest extends RecursiveTask<Long> {
     protected Long compute() {
         if (end - start <= THRESHOLD) {
             long sum = 0L;
-            for (int i = start; i < end; i++) {
-                sum += array[i].getI();
+            for(long i = start; i <= end; i++) {
+                sum += i;
             }
             return sum;
         }
-        int middle = (start + end) /2;
-        ParallelTest parallelTest1 = new ParallelTest(array, start, middle);
-        ParallelTest parallelTest2 = new ParallelTest(array, middle, end);
+        long middle = (start + end) /2;
+        ParallelTest parallelTest1 = new ParallelTest(start, middle);
+        ParallelTest parallelTest2 = new ParallelTest(middle + 1, end);
         invokeAll(parallelTest1, parallelTest2);
         return parallelTest1.join() + parallelTest2.join();
     }
 
     public static void main(String[] args) {
-        long start = System.currentTimeMillis();
-        Test[] arr = new Test[10000000];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = new Test(i);
+        Instant start = Instant.now();
+        long result = 0;
+        long size = 100000000000L;
+
+        // 计算结果： 932356074711512064，耗时：30579
+        for (long i = 0; i <= size; i++) {
+            result += i;
         }
-        long middle = System.currentTimeMillis();
-        System.out.println("赋值结束： " + (middle- start));
 
-        /**
-         *         赋值结束： 2589
-         *         计算结果： 49999995000000，耗时：2896
-         *         ForkJoinPool fjp = new ForkJoinPool(4);
-         *         ForkJoinTask<Long> task = new ParallelTest(arr, 0, arr.length);
-         *         long result = fjp.invoke(task);
-         *
-        */
-        /**
-         *
-         *         赋值结束： 2526
-         *         计算结果： 49999995000000，耗时：24
-         *
-         *         long result = 0;
-         *         for (int i = 0; i < arr.length; i++) {
-         *             result += arr[i].getI();
-         *         }
-        */
-        /**
-         *          赋值结束： 2483
-         *          计算结果： 49999995000000，耗时：2952
-         *          long result = Arrays.stream(arr).map(Test::getI).reduce(0L, (a, b) ->  a + b);
-         */
-        /**
-         *          赋值结束： 2614
-         *          计算结果： 49999995000000，耗时：2974
-         *          long result  = Arrays.stream(arr).parallel().map(Test::getI).reduce(0L, (a, b) ->  a + b);
-         */
-        /**
-         * 赋值结束： 2483
-         * 计算结果： 49999995000000，耗时：23
-         */
-/*        long result = 0;
-        for (Test test : arr) {
-            result += test.getI();
-        }
-        System.out.println("计算结果： " + result + "，耗时：" + (System.currentTimeMillis() - middle));*/
+        Instant end = Instant.now();
+        System.out.println("result: " + result + ", duration: " + Duration.between(start, end).toMillis());
 
-    }
-}
+        // 计算结果： 932356074711512064，耗时：27025
+        start = Instant.now();
+        ForkJoinPool fjp = new ForkJoinPool(4);
+        ForkJoinTask<Long> task = new ParallelTest(0, size);
+        result = fjp.invoke(task);
+        end = Instant.now();
+        System.out.println("result: " + result + ", duration: " + Duration.between(start, end).toMillis());
 
-class Test {
-    private long i;
+        // 计算结果： 932356074711512064，耗时：43651
+        start = Instant.now();
+        result = LongStream.rangeClosed(0, size).reduce(0, Long::sum);
+        end = Instant.now();
+        System.out.println("result: " + result + ", duration: " + Duration.between(start, end).toMillis());
 
-    public Test(long i) {
-        this.i = i;
-    }
+        // 计算结果： 932356074711512064，耗时：17492
+        start = Instant.now();
+        result = LongStream.rangeClosed(0, size).parallel().reduce(0, Long::sum);
+        end = Instant.now();
+        System.out.println("result: " + result + ", duration: " + Duration.between(start, end).toMillis());
 
-    public long getI() {
-        return i;
-    }
-
-    public void setI(long i) {
-        this.i = i;
     }
 }
