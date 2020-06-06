@@ -35,7 +35,7 @@ public class ParallelTest extends RecursiveTask<Long> {
         long middle = (start + end) /2;
         ParallelTest parallelTest1 = new ParallelTest(start, middle);
         ParallelTest parallelTest2 = new ParallelTest(middle + 1, end);
-        invokeAll(parallelTest1, parallelTest2);
+        invokeAll(parallelTest1, parallelTest2); // 防止本线程闲置
         return parallelTest1.join() + parallelTest2.join();
     }
 
