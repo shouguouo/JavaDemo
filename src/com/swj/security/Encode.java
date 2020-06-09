@@ -1,5 +1,12 @@
 package com.swj.security;
 
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.KeyUtil;
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.asymmetric.KeyType;
+import cn.hutool.crypto.asymmetric.RSA;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -14,10 +21,7 @@ import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
-import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
 import java.util.Arrays;
 import java.util.Base64;
 
@@ -103,7 +107,16 @@ public class Encode {
     //  2、小红用自己的RSA私钥解密得到AES口令；
     //  3、双方使用这个共享的AES口令用AES加密通信。
     // 非对称加密就是加密和解密使用的不是相同的密钥，只有同一个公钥-私钥对才能正常加解密；
+    public static byte[] rsaEncrypt(String input) {
+        return rsa.encrypt(StrUtil.bytes(input, CharsetUtil.CHARSET_UTF_8), KeyType.PublicKey);
+    }
 
+    public static byte[] rsaDecrypt(String input) {
+        return rsa.decrypt(Base64.getDecoder().decode(input), KeyType.PrivateKey);
+    }
+
+
+    private static final RSA rsa = new RSA();
 
     // 签名算法
 
@@ -150,24 +163,11 @@ public class Encode {
         System.out.println("解密后：" + new String(decrypt, StandardCharsets.UTF_8));
 
         System.out.println(urlDecode("%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E5%91%98"));
+        byte[] rsaEncrypt = rsaEncrypt("sdas23dsasadsadsad？");
+        System.out.println(Arrays.toString(rsaEncrypt));
+        System.out.println("rsa加密后：" + Base64.getEncoder().encodeToString(rsaEncrypt));
+        byte[] rasDecrypt = rsaDecrypt(Base64.getEncoder().encodeToString(rsaEncrypt));
+        System.out.println("rs解密后：" + new String(rasDecrypt, StandardCharsets.UTF_8));
 
-        System.out.println(new BigInteger(1, "系统导出的原文件：CISP-75130000_A1005_V01_1_20191129_01_Z.ZIP".getBytes(StandardCharsets.UTF_8)).toString(16));
-        String s = "504b0304142008200820727c824f2020202020202020202020202b202020434953502d37353133303030305f41313030355f5630315f315f32303139313230325f30315f5a2e5458540320504b0708202020200220202020202020504b01021403142008200820727c824f2020202002202020202020202b2020202020202020202020840220202020434953502d37353133303030305f41313030355f5630315f315f32303139313230325f30315f5a2e545854504b05062020202001200120592020205b2020202020";
-
-        byte[] baKeyword = new byte[s.length() / 2];
-        for (int i = 0; i < baKeyword.length; i++) {
-            try {
-                baKeyword[i] = (byte) (0xff & Integer.parseInt(s.substring(i * 2, i * 2 + 2), 16));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        try {
-            s = new String(baKeyword, StandardCharsets.US_ASCII);
-            new String();
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-        System.out.println(s);
     }
 }
