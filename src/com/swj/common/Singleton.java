@@ -31,6 +31,20 @@ public class Singleton {
             }
         }
     }
+
+    // volatile保证new Singleton()时指令重排（分配空间、初始化对象、设置引用） 导致singleton未实例化完成时，其他线程以为实例化已经完成直接返回未初始化完成的singleton
+    private static volatile Singleton singleton;
+
+    public static Singleton getSingleton() {
+        if (singleton == null) { // 保证性能
+            synchronized (Singleton.class) {
+                if (singleton == null) { // 获取锁后再进行判断，防止多次实例化
+                    singleton = new Singleton();
+                }
+            }
+        }
+        return singleton;
+    }
     protected static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
     public static void main(String[] args) throws ParseException {
