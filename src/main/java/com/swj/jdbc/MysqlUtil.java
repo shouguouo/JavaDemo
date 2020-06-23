@@ -26,7 +26,9 @@ public class MysqlUtil {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/wink~?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true", "root", "swjxhy666");
+            // jdbc:mysql://192.168.223.20:3306/wink~?user=root&password=xhyswj666&useUnicode=true&characterEncoding=UTF8
+            //connection = DriverManager.getConnection("jdbc:mysql://192.168.223.20:3306/shouwj?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true", "root", "swjxhy666");
+            connection = DriverManager.getConnection("jdbc:mysql://192.168.223.20:3306/shouwj?user=root&password=xhyswj666&useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai&useSSL=false", "root", "swjxhy666");
             System.out.println(connection.getMetaData().toString());
             String sql = "select sysdate() as currentTime from dual";
             ps = connection.prepareStatement(sql);

@@ -7,7 +7,13 @@ package com.swj.generics;
  */
 public class Tuple {
     public static void main(String[] args) {
+        f("", new StringBuffer(), new StringBuilder());
+    }
 
+    public static <T, Y> void f(T t, StringBuffer s, Y y) {
+        System.out.println(t.getClass().getCanonicalName());
+        System.out.println(s.getClass().getCanonicalName());
+        System.out.println(y.getClass().getCanonicalName());
     }
 }
 

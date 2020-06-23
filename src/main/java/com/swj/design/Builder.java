@@ -2,6 +2,7 @@ package com.swj.design;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * 建造者模式（Builder Pattern）：使用多个简单的对象一步一步构建成一个复杂的对象

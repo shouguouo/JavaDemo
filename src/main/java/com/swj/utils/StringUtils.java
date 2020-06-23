@@ -45,7 +45,7 @@ public class StringUtils {
         return sb.toString();
     }
 
-    public static String blankToLowerCaseUnderLine(String str) {
-        return str.replaceAll("[\\s*?]", Const.UNDER_LINE).toLowerCase();
+    public static String blankToLowerCaseMiddleLine(String str) {
+        return str.replaceAll("[\\s*?]", Const.MIDDLE_LINE).toLowerCase();
     }
 }
