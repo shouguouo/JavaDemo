@@ -1,7 +1,5 @@
 package com.swj.thread;
 
-import com.sun.istack.internal.NotNull;
-
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
