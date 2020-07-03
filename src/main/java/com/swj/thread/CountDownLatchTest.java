@@ -12,6 +12,7 @@ public class CountDownLatchTest {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         ExecutorService executors = Executors.newFixedThreadPool(10, new CountThreadFactory());
         CountDownLatch cdl = new CountDownLatch(10);
+        executors.execute(new CountWait(cdl));
         List<Future<String>> res = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             res.add(executors.submit(new CountThread(cdl)));
@@ -23,6 +24,24 @@ public class CountDownLatchTest {
     }
 }
 
+class CountWait implements Runnable {
+
+    private CountDownLatch countDownLatch;
+
+    public CountWait(CountDownLatch countDownLatch) {
+        this.countDownLatch = countDownLatch;
+    }
+
+    @Override
+    public void run() {
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            System.out.println("CountDownLatch Interrupted");
+        }
+        System.out.println("Wait didn't work anymore");
+    }
+}
 class CountThreadFactory implements ThreadFactory {
     private int count = 0;
     @Override
