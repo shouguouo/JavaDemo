@@ -16,7 +16,15 @@ public class ConcurrentHashMapTest {
     concurrentHashMap.put(sb, "不好");
 
     System.out.println(concurrentHashMap.size());
-    System.out.println(concurrentHashMap.get("hao"));
+    System.out.println(concurrentHashMap.get(sb));
+    System.out.println("-----------------------------");
+    String res = concurrentHashMap.putIfAbsent(sb, "hi");
+    System.out.println(concurrentHashMap.get(sb));
+    System.out.println(res);
+    System.out.println("-----------------------------");
+    res = concurrentHashMap.putIfAbsent("hi", "hi");
+    System.out.println(concurrentHashMap.get(sb));
+    System.out.println(res);
   }
 
 }
