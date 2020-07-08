@@ -31,6 +31,8 @@ public class Memorizer<A, V> implements Computable<A, V> {
             }
             try {
                 return f.get();
+            } catch (CancellationException e) {
+                cache.remove(arg, f);
             } catch (ExecutionException e) {
                 throw launderThrowable(e);
             }
