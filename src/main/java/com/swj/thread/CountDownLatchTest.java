@@ -1,5 +1,7 @@
 package com.swj.thread;
 
+import com.google.common.base.Stopwatch;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -12,14 +14,18 @@ public class CountDownLatchTest {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         ExecutorService executors = Executors.newFixedThreadPool(10, new CountThreadFactory());
         CountDownLatch cdl = new CountDownLatch(10);
-        executors.execute(new CountWait(cdl));
+        CountDownLatch start = new CountDownLatch(1);
         List<Future<String>> res = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            res.add(executors.submit(new CountThread(cdl)));
+            res.add(executors.submit(new CountThread(cdl, start)));
         }
-        for (Future<String> re : res) {
+      /*  for (Future<String> re : res) {
             System.out.println(re.get());
-        }
+        }*/
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        executors.execute(new CountWait(cdl, stopwatch));
+        start.countDown();
+        System.out.println(stopwatch.elapsed().getNano());
         executors.shutdown();
     }
 }
@@ -28,8 +34,11 @@ class CountWait implements Runnable {
 
     private CountDownLatch countDownLatch;
 
-    public CountWait(CountDownLatch countDownLatch) {
+    private Stopwatch stopwatch;
+
+    public CountWait(CountDownLatch countDownLatch, Stopwatch stopwatch) {
         this.countDownLatch = countDownLatch;
+        this.stopwatch = stopwatch;
     }
 
     @Override
@@ -38,6 +47,8 @@ class CountWait implements Runnable {
             countDownLatch.await();
         } catch (InterruptedException e) {
             System.out.println("CountDownLatch Interrupted");
+        } finally {
+            stopwatch.stop();
         }
         System.out.println("Wait didn't work anymore");
     }
@@ -56,13 +67,21 @@ class CountThread implements Callable<String> {
 
     private CountDownLatch countDownLatch;
 
-    public CountThread(CountDownLatch countDownLatch) {
+    private CountDownLatch start;
+
+    public CountThread(CountDownLatch countDownLatch, CountDownLatch start) {
         this.countDownLatch = countDownLatch;
+        this.start = start;
     }
 
     @Override
     public String call() {
         try {
+            try {
+                start.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             System.out.println(Thread.currentThread().getName());
             return Thread.currentThread().getName() + "：this is hangzhou";
         } finally {
