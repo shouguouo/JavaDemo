@@ -1,6 +1,5 @@
 package com.swj.thread;
 
-import java.sql.Time;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
