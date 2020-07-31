@@ -64,7 +64,9 @@ public class Singleton {
             System.out.println(sdf.format(sd.getTime()));
             sd.add(Calendar.DAY_OF_MONTH, 1);
         }
-
+        Singleton aa = SingletonEnum2.INSTNACE.getInstance();
+        Singleton bb = SingletonEnum2.INSTNACE.getInstance();
+        System.out.println(aa == bb);
     }
 }
 
@@ -89,4 +91,14 @@ enum SingletonEnum{
 
     protected abstract void read();
     protected abstract void write();
+}
+
+enum SingletonEnum2{
+    INSTNACE;
+    private Singleton singleton = Singleton.getSingleton();
+
+    public Singleton getInstance() {
+        return singleton;
+    }
+
 }
