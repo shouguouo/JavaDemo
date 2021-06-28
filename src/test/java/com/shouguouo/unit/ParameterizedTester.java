@@ -1,7 +1,7 @@
 package com.shouguouo.unit;
 
 import com.google.common.collect.Lists;
-import com.shouguouo.utils.StringUtils;
+import com.shouguouo.tools.utils.StringUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
